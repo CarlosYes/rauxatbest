@@ -1,11 +1,11 @@
- <!DOCTYPE html>
-<html lang=pt-PT>
+<!DOCTYPE html>
+<html lang="pt-PT">
 <head>
 <title>Radio Amigos Unidos</title>
 <meta name="description" content="RAU" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta http-equiv=X-UA-Compatible content="IE=Edge"/>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
 <meta property="og:title" content="RAU Player" />
 <meta property="og:description" content="RAU" />
 <link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="48x48" />
@@ -43,7 +43,6 @@
         .rainbow-outer {
             position: fixed; top: 88px; width: 300px; height: 490px;
             border-radius: 15px; z-index: 5; padding: 6px; 
-            /* Gradiente cónico para girar como um disco */
             background: conic-gradient(from var(--angle), #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000);
             animation: rotateRainbow 4s linear infinite;
         }
@@ -57,10 +56,16 @@
         .left-gif { left: 65px; }
         .right-gif { right: 50px; }
 
-        /* QUADRO CENTRAL - MEDIDAS RÍGIDAS (91px topo / 728px largura) */
+        /* QUADRO CENTRAL - AJUSTADO: sobe 2px (89px) e move 1px esquerda */
         .center-frame {
-            position: fixed; top: 91px; left: 50%; transform: translateX(-50%); 
-            width: 728px; height: 489px; z-index: 10;
+            position: fixed; 
+            top: 89px; /* Ajustado de 91px para 89px (-2px) */
+            left: 50%; 
+            transform: translateX(-50%); 
+            margin-left: -1px; /* Ajustado 1px para a esquerda */
+            width: 728px; 
+            height: 489px; 
+            z-index: 10;
         }
 
         .player-frame {
@@ -148,42 +153,20 @@
         setInterval(createNote, 300);
     </script>
 <script>
-
     var message = "©arlos Copyright";
-
-    function clickIE4() {
-        if (event.button == 2) {
-            alert(message);
-            return false;
-        }
-    }
-
+    function clickIE4() { if (event.button == 2) { alert(message); return false; } }
     function clickNS4(e) {
         if (document.layers || document.getElementById && !document.all) {
-            if (e.which == 2 || e.which == 3) {
-                alert(message);
-                return false;
-            }
+            if (e.which == 2 || e.which == 3) { alert(message); return false; }
         }
     }
-
-    if (document.layers) {
-        document.captureEvents(Event.MOUSEDOWN);
-        document.onmousedown = clickNS4;
-    } else if (document.all && !document.getElementById) {
-        document.onmousedown = clickIE4;
-    }
-
+    if (document.layers) { document.captureEvents(Event.MOUSEDOWN); document.onmousedown = clickNS4; }
+    else if (document.all && !document.getElementById) { document.onmousedown = clickIE4; }
     document.oncontextmenu = new Function("alert(message);return false")
 </script>
 <script>
-
-    function disableselect(e) {
-        return false
-    }
-    function reEnable() {
-        return true
-    }
+    function disableselect(e) { return false }
+    function reEnable() { return true }
     document.onselectstart = new Function("return false")
     if (window.sidebar) {
         document.onmousedown = disableselect
@@ -191,15 +174,7 @@
     }
 </script>
 <script>
-        window.oncontextmenu = function () {
-            console.log("Right Click Disabled");
-            return false;
-        }
-    </script> 
-  
+    window.oncontextmenu = function () { return false; }
+</script>  
 </body>
-</html>
-
-  </body>
-  
 </html>
