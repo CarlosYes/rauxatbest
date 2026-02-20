@@ -1,0 +1,205 @@
+ <!DOCTYPE html>
+<html lang=pt-PT>
+<head>
+<title>Radio Amigos Unidos</title>
+<meta name="description" content="RAU" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv=X-UA-Compatible content="IE=Edge"/>
+<meta property="og:title" content="RAU Player" />
+<meta property="og:description" content="RAU" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="48x48" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="96x96" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="144x144" />
+<link rel="icon" type="image/png" href="https://i.imgur.com/nNh98kV.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://i.imgur.com/nNh98kV.png" sizes="180x180"/>
+    <style>
+        /* REGISTO DA VARIÁVEL PARA ROTAÇÃO FLUIDA */
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        @keyframes backgroundCycle {
+            0%   { background-color: #2e004f; } 
+            33%  { background-color: #001f3f; } 
+            66%  { background-color: #4a001a; } 
+            100% { background-color: #2e004f; }
+        }
+
+        @keyframes rotateRainbow {
+            0% { --angle: 0deg; }
+            100% { --angle: 360deg; }
+        }
+
+        body, html { 
+            margin: 0; padding: 0; height: 100%; overflow: hidden; 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            animation: backgroundCycle 40s ease-in-out infinite;
+        }
+
+        /* MOLDURAS LATERAIS - MEDIDAS RÍGIDAS (88px topo / 300px largura) */
+        .rainbow-outer {
+            position: fixed; top: 88px; width: 300px; height: 490px;
+            border-radius: 15px; z-index: 5; padding: 6px; 
+            /* Gradiente cónico para girar como um disco */
+            background: conic-gradient(from var(--angle), #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000);
+            animation: rotateRainbow 4s linear infinite;
+        }
+
+        .inner-sync {
+            width: 100%; height: 100%; border-radius: 10px; overflow: hidden;
+            animation: backgroundCycle 40s ease-in-out infinite;
+        }
+
+        .inner-sync img { width: 100%; height: 100%; object-fit: cover; }
+        .left-gif { left: 65px; }
+        .right-gif { right: 50px; }
+
+        /* QUADRO CENTRAL - MEDIDAS RÍGIDAS (91px topo / 728px largura) */
+        .center-frame {
+            position: fixed; top: 91px; left: 50%; transform: translateX(-50%); 
+            width: 728px; height: 489px; z-index: 10;
+        }
+
+        .player-frame {
+            position: absolute; width: 100%; height: 100%; border-radius: 25px; padding: 6px;
+            background: conic-gradient(from var(--angle), #ff0000, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #8b00ff, #ff0000);
+            animation: rotateRainbow 4s linear infinite;
+        }
+
+        .content-inner {
+            width: 100%; height: 100%; border-radius: 20px; overflow: hidden;
+            animation: backgroundCycle 40s ease-in-out infinite;
+        }
+
+        .content-inner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        /* NOTAS MUSICAIS LATERAIS */
+        .note {
+            position: fixed; z-index: 100; bottom: -60px;
+            font-weight: bold; transition: transform 12s linear, opacity 12s;
+            pointer-events: none;
+        }
+
+        /* RODAPÉ ARCO-ÍRIS */
+        .footer-text {
+            position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%);
+            font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 5px;
+            background: linear-gradient(to right, #ff0000, #ffff00, #00ff00, #00ffff, #8b00ff, #ff0000);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: textRainbow 3s linear infinite;
+        }
+
+        @keyframes textRainbow { to { background-position: 200% center; } }
+
+        /* ADAPTAÇÃO POR ZOOM PARA ECRÃS PEQUENOS */
+        @media (max-width: 1350px) { body { zoom: 0.8; } }
+        @media (max-width: 1100px) { body { zoom: 0.6; } }
+        @media (max-width: 800px) { body { zoom: 0.45; } }
+    </style>
+</head>
+<body>
+
+    <div class="rainbow-outer left-gif">
+        <div class="inner-sync"><img src="https://xatimg.com/image/5Dj3eDg0Ou6o.gif"></div>
+    </div>
+
+    <div class="center-frame">
+        <div class="player-frame">
+            <div class="content-inner">
+                <img src="https://xatimg.com/image/UNAiCmeXP6aw.png">
+            </div>
+        </div>
+    </div>
+
+    <div class="rainbow-outer right-gif">
+        <div class="inner-sync"><img src="https://xatimg.com/image/5Dj3eDg0Ou6o.gif"></div>
+    </div>
+
+    <div class="footer-text">Rádio Dos Amigos Unidos</div>
+
+    <script>
+        function createNote() {
+            const notes = ['♪', '♫', '♬', '♩'];
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#ff7f00'];
+            const note = document.createElement('div');
+            note.className = 'note';
+            note.innerText = notes[Math.floor(Math.random() * notes.length)];
+            const side = Math.random() > 0.5 ? 'left' : 'right';
+            let startPos;
+            if (side === 'left') {
+                startPos = Math.random() * 350 + "px"; 
+            } else {
+                startPos = (window.innerWidth - (Math.random() * 350) - 50) + "px"; 
+            }
+            note.style.left = startPos;
+            note.style.color = colors[Math.floor(Math.random() * colors.length)];
+            note.style.fontSize = Math.random() * 10 + 18 + "px";
+            note.style.opacity = "0.7";
+            document.body.appendChild(note);
+            setTimeout(() => {
+                note.style.transform = `translateY(-120vh) rotate(${Math.random() * 360}deg)`;
+                note.style.opacity = "0";
+            }, 100);
+            setTimeout(() => note.remove(), 14000);
+        }
+        setInterval(createNote, 300);
+    </script>
+<script>
+
+    var message = "©arlos Copyright";
+
+    function clickIE4() {
+        if (event.button == 2) {
+            alert(message);
+            return false;
+        }
+    }
+
+    function clickNS4(e) {
+        if (document.layers || document.getElementById && !document.all) {
+            if (e.which == 2 || e.which == 3) {
+                alert(message);
+                return false;
+            }
+        }
+    }
+
+    if (document.layers) {
+        document.captureEvents(Event.MOUSEDOWN);
+        document.onmousedown = clickNS4;
+    } else if (document.all && !document.getElementById) {
+        document.onmousedown = clickIE4;
+    }
+
+    document.oncontextmenu = new Function("alert(message);return false")
+</script>
+<script>
+
+    function disableselect(e) {
+        return false
+    }
+    function reEnable() {
+        return true
+    }
+    document.onselectstart = new Function("return false")
+    if (window.sidebar) {
+        document.onmousedown = disableselect
+        document.onclick = reEnable
+    }
+</script>
+<script>
+        window.oncontextmenu = function () {
+            console.log("Right Click Disabled");
+            return false;
+        }
+    </script> 
+  
+</body>
+</html>
+
+  </body>
+  
+</html>
